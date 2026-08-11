@@ -1,285 +1,72 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trimize Chatbot</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f2f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-.chat-container {
-  width: 420px;
-  height: 650px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-.chat-header {
-  background: #1a1a2e;
-  color: white;
-  padding: 18px;
-  text-align: center;
-}
-.chat-header h3 { margin-bottom: 4px; font-size: 18px; }
-.chat-header span { font-size: 12px; color: #4caf50; }
-.chat-messages {
-  flex: 1;
-  padding: 18px;
-  overflow-y: auto;
-  background: #f8f9fa;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.message {
-  max-width: 88%;
-  padding: 12px 16px;
-  border-radius: 18px;
-  font-size: 14px;
-  line-height: 1.7;
-  animation: fadeIn 0.3s ease;
-}
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.bot-msg {
-  background: white;
-  color: #222;
-  align-self: flex-start;
-  border-bottom-right-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-}
-.user-msg {
-  background: #007bff;
-  color: white;
-  align-self: flex-end;
-  border-bottom-left-radius: 4px;
-}
-.chat-input {
-  display: flex;
-  padding: 14px;
-  background: white;
-  border-top: 1px solid #eee;
-  gap: 10px;
-}
-.chat-input input {
-  flex: 1;
-  border: 1px solid #ddd;
-  border-radius: 25px;
-  padding: 12px 18px;
-  outline: none;
-  font-size: 14px;
-}
-.chat-input button {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: none;
-  background: #007bff;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-}
-.quick-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-.quick-btn {
-  background: #e3f2fd;
-  color: #007bff;
-  border: 1px solid #bbdefb;
-  border-radius: 16px;
-  padding: 6px 14px;
-  font-size: 12px;
-  cursor: pointer;
-}
-.escalate-box {
-  background: #fff8e1;
-  border: 1px solid #ffe082;
-  padding: 14px;
-  border-radius: 12px;
-  margin-top: 8px;
-}
-.escalate-box button {
-  background: #ff9800;
-  color: white;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-  margin-top: 8px;
-}
-.loading {
-  color: #888;
-  font-size: 12px;
-  text-align: center;
-  padding: 10px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="مساعد تريمايز الذكي لخدمة العملاء">
+  <title>مساعد تريمايز</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
+  <main class="page">
+    <section class="chat-card" aria-label="مساعد تريمايز">
+      <header class="chat-header">
+        <div class="brand-row">
+          <div>
+            <h1>مساعد تريمايز <span class="brand-mark">〉</span></h1>
+            <div class="status">
+              <span class="status-dot"></span>
+              <span>متصل الآن</span>
+            </div>
+          </div>
+        </div>
+      </header>
 
-<div class="chat-container">
-  <div class="chat-header">
-    <h3>🪒 مساعد تريمايز</h3>
-    <span>● جاري التحميل...</span>
+      <div id="messages" class="messages" aria-live="polite"></div>
+
+      <div id="loading" class="loading" style="display:none;">
+        جاري التفكير...
+      </div>
+
+      <footer class="chat-input-area">
+        <button id="sendButton" class="send-button" type="button" aria-label="إرسال">
+          <span>➤</span>
+        </button>
+
+        <input
+          id="userInput"
+          type="text"
+          autocomplete="off"
+          placeholder="اكتب سؤالك هنا..."
+          aria-label="اكتب سؤالك"
+        >
+      </footer>
+    </section>
+  </main>
+
+  <div id="escalationModal" class="modal" style="display:none;">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="close-modal" type="button" onclick="closeModal()" aria-label="إغلاق">×</button>
+
+      <h2 id="modalTitle">تواصل مع فريق الدعم</h2>
+      <p>سيب بياناتك وفريق تريمايز هيتواصل معاك.</p>
+
+      <form id="escalationForm">
+        <label for="name">الاسم</label>
+        <input id="name" name="name" type="text" required>
+
+        <label for="phone">رقم الموبايل</label>
+        <input id="phone" name="phone" type="tel" required>
+
+        <label for="message">ملاحظات إضافية</label>
+        <textarea id="message" name="message" rows="4"></textarea>
+
+        <button type="submit" class="submit-button">إرسال</button>
+      </form>
+    </div>
   </div>
-  <div class="chat-messages" id="messages">
-    <div class="loading">⏳ جاري تحميل البيانات...</div>
-  </div>
-  <div class="chat-input">
-    <input type="text" id="userInput" placeholder="اكتب سؤالك هنا..." autocomplete="off" disabled>
-    <button onclick="sendMessage()" disabled>➤</button>
-  </div>
-</div>
 
-<script>
-let kb = {};
-let lastQuestion = '';
-const messagesDiv = document.getElementById('messages');
-const input = document.getElementById('userInput');
-const sendBtn = document.querySelector('.chat-input button');
-const statusSpan = document.querySelector('.chat-header span');
-
-// حمل الداتا من JSON
-fetch('data.json')
-  .then(r => {
-    if (!r.ok) throw new Error('فشل تحميل البيانات');
-    return r.json();
-  })
-  .then(data => {
-    kb = data;
-    messagesDiv.innerHTML = '';
-    addMessage('bot', kb.greetings.response + '\n\n👇 اختار موضوع أو اكتب سؤالك:');
-    showQuickButtons();
-    input.disabled = false;
-    sendBtn.disabled = false;
-    statusSpan.textContent = '● متواجد الآن';
-    statusSpan.style.color = '#4caf50';
-  })
-  .catch(err => {
-    messagesDiv.innerHTML = '';
-    addMessage('bot', '❌ حدث خطأ في تحميل البيانات.\n\nجرب تاني أو تواصل معنا: 01034472705');
-    console.error(err);
-  });
-
-function addMessage(sender, text) {
-  const div = document.createElement('div');
-  div.className = `message ${sender}-msg`;
-  div.innerHTML = text.replace(/\n/g, '<br>');
-  messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-function showQuickButtons() {
-  const div = document.createElement('div');
-  div.className = 'quick-buttons';
-  const buttons = ['منتجاتنا', 'الشحن', 'الأسعار', 'التواصل', 'الضمان'];
-  buttons.forEach(btn => {
-    const b = document.createElement('button');
-    b.className = 'quick-btn';
-    b.textContent = btn;
-    b.onclick = () => { input.value = btn; sendMessage(); };
-    div.appendChild(b);
-  });
-  messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-function findAnswer(text) {
-  const q = text.toLowerCase().trim();
-  if (!q) return null;
-
-  // Exact FAQ patterns
-  const faqPatterns = [
-    { q: ['زيرو','صفر','تحلق زيرو'], k: 't1_zero' },
-    { q: ['تجرح','جرح','تقطع'], k: 't1_cut' },
-    { q: ['مش شغالة','مش بتشتغل','لا يعمل','مش شغال'], k: 't1_charge' },
-    { q: ['ضمان الماكينة','ضمان الجروح','صيانة الماكينة'], k: 't1_warranty' },
-    { q: ['شحن الماكينة','البطارية','الشاحن'], k: 't1_charge' },
-    { q: ['ألومنيوم','أملاح'], k: 'deodorant_faq' },
-    { q: ['12 ساعة','تدوم الرائحة'], k: 'deodorant_faq' },
-    { q: ['بعد إزالة الشعر','بعد الحلاقة'], k: 'deodorant_faq' },
-    { q: ['بشرة حساسة','الغسول حساس'], k: 'wash_faq' },
-    { q: ['كحول','بارابين','سلفات'], k: 'wash_faq' },
-    { q: ['جفاف','الغسول يجفف'], k: 'wash_faq' },
-    { q: ['الفرق بين الغسول والشاور','فرق غسول شاور'], k: 'shower_faq' },
-    { q: ['جفاف الشاور','الشاور يجفف'], k: 'shower_faq' },
-  ];
-
-  for (const pattern of faqPatterns) {
-    for (const keyword of pattern.q) {
-      if (q.includes(keyword)) return kb[pattern.k].response;
-    }
-  }
-
-  // Keyword matching
-  for (const [key, item] of Object.entries(kb)) {
-    if (item.keywords) {
-      for (const keyword of item.keywords) {
-        if (q.includes(keyword.toLowerCase())) return item.response;
-      }
-    }
-  }
-  return null;
-}
-
-function sendMessage() {
-  const text = input.value.trim();
-  if (!text) return;
-  addMessage('user', text);
-  input.value = '';
-  lastQuestion = text;
-
-  setTimeout(() => {
-    const answer = findAnswer(text);
-    if (answer) {
-      addMessage('bot', answer);
-    } else {
-      addMessage('bot', 'عذراً، مش قادر أجاوب على السؤال ده بالضبط. 😕\n\nعايز أساعدك تواصل مع فريق الدعم؟');
-      showEscalation();
-    }
-  }, 500);
-}
-
-function showEscalation() {
-  const div = document.createElement('div');
-  div.className = 'escalate-box';
-  div.innerHTML = `
-    <div style="font-size:13px;margin-bottom:6px;">📩 سيب بياناتك وهنرد عليك:</div>
-    <button onclick="openWhatsApp()">💬 تواصل عبر واتساب</button>
-    <button onclick="openEmail()" style="background:#007bff;margin-right:6px;">📧 إرسال إيميل</button>
-  `;
-  messagesDiv.appendChild(div);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
-
-function openWhatsApp() {
-  const msg = `استفسار من شات بوت تريمايز:%0Aالسؤال: ${encodeURIComponent(lastQuestion)}`;
-  window.open(`https://wa.me/201034472705?text=${msg}`, '_blank');
-  addMessage('bot', '✅ هنفتح لك واتساب مباشرة مع فريق الدعم.');
-}
-
-function openEmail() {
-  const subject = encodeURIComponent('استفسار من شات بوت تريمايز');
-  const body = encodeURIComponent(`السؤال: ${lastQuestion}\n\n[تم الإرسال تلقائياً من شات بوت تريمايز]`);
-  window.open(`mailto:info@trimize.com?subject=${subject}&body=${body}`, '_blank');
-  addMessage('bot', '✅ تم فتح تطبيق الإيميل. أرسل رسالتك وفريق الدعم هيرد عليك.');
-}
-
-input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
-</script>
-
+  <script src="./app.js"></script>
 </body>
 </html>
