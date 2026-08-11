@@ -71,7 +71,7 @@ body {
 }
 
 .message {
-  max-width: 80%;
+  max-width: 85%;
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 0.95rem;
@@ -138,6 +138,26 @@ body {
 .send-button:disabled {
   background: #93c5fd;
   cursor: not-allowed;
+}
+
+/* Choice Buttons Styling */
+.choice-btn {
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: right;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.choice-btn:hover {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
 }
 
 /* Modal Styling */
