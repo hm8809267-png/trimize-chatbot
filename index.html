@@ -16,7 +16,6 @@
         <div class="brand-row">
           <div>
             <h1>مساعد تريمايز <span class="brand-mark">〉</span></h1>
-
             <div class="status">
               <span class="status-dot"></span>
               <span>متصل الآن</span>
@@ -32,102 +31,43 @@
       </div>
 
       <footer class="chat-input-area">
-
-        <button
-          id="sendButton"
-          class="send-button"
-          type="button"
-          aria-label="إرسال"
-        >
+        <button id="sendButton" class="send-button" type="button" aria-label="إرسال">
           <span>➤</span>
         </button>
-
-        <input
-          id="userInput"
-          type="text"
-          autocomplete="off"
-          placeholder="اكتب سؤالك هنا..."
-          aria-label="اكتب سؤالك"
-        >
-
+        <input id="userInput" type="text" placeholder="اكتب سؤالك هنا..." aria-label="اكتب سؤالك هنا">
       </footer>
 
     </section>
   </main>
 
-
-  <!-- Contact Modal -->
-
+  <!-- Modal -->
   <div id="escalationModal" class="modal" style="display:none;">
-
-    <div
-      class="modal-content"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modalTitle"
-    >
-
-      <button
-        class="close-modal"
-        type="button"
-        onclick="closeModal()"
-        aria-label="إغلاق"
-      >
-        ×
-      </button>
-
-      <h2 id="modalTitle">تواصل مع فريق الدعم</h2>
-
-      <p>
-        سيب بياناتك وفريق تريمايز هيتواصل معاك.
-      </p>
-
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>تواصل مع فريق الدعم</h2>
+      <p>من فضلك اترك بياناتك وسيتواصل معك أحد ممثلي خدمة العملاء في أقرب وقت.</p>
+      
       <form id="escalationForm">
-
-        <label for="name">الاسم</label>
-
-        <input
-          id="name"
-          name="name"
-          type="text"
-          required
-        >
-
-
-        <label for="phone">رقم الموبايل</label>
-
-        <input
-          id="phone"
-          name="phone"
-          type="tel"
-          required
-        >
-
-
-        <label for="message">ملاحظات إضافية</label>
-
-        <textarea
-          id="message"
-          name="message"
-          rows="4"
-        ></textarea>
-
-
-        <button
-          type="submit"
-          class="submit-button"
-        >
-          إرسال
-        </button>
-
+        <div class="form-group">
+          <label for="name">الاسم:</label>
+          <input type="text" id="name" name="name" required placeholder="اكتب اسمك">
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">رقم الهاتف:</label>
+          <input type="tel" id="phone" name="phone" required placeholder="اكتب رقم هاتفك أو واتساب">
+        </div>
+        
+        <div class="form-group">
+          <label for="notes">ملاحظات إضافية (اختياري):</label>
+          <textarea id="notes" name="notes" placeholder="أي تفاصيل أخرى حابب توضحها..."></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn">إرسال</button>
       </form>
-
     </div>
-
   </div>
 
-
   <script src="./app.js"></script>
-
 </body>
 </html>
