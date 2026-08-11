@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trimize Chatbot</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="chat-container">
+  <div class="chat-header">
+    <h3>🪒 مساعد تريمايز</h3>
+    <span>● online</span>
+  </div>
+  <div class="chat-messages" id="messages"></div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="اكتب سؤالك هنا..." autocomplete="off">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<!-- نموذج التصعيد -->
+<div id="escalationModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3>📩 تواصل مع فريق الدعم</h3>
+    <p>عشان نساعدك، سيب بياناتك وهنرد عليك</p>
+    <form id="escalationForm">
+      <input type="text" name="name" placeholder="الاسم" required>
+      <input type="email" name="email" placeholder="الإيميل" required>
+      <input type="tel" name="phone" placeholder="رقم التليفون">
+      <textarea name="message" placeholder="اكتب استفسارك بالتفصيل" required></textarea>
+      <button type="submit">إرسال</button>
+    </form>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
